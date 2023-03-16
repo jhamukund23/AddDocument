@@ -11,7 +11,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AddDocumentMSA
+namespace AddDocument
 {
     public class MessageConsumer : BackgroundService
     {

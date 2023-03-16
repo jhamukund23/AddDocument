@@ -14,7 +14,7 @@ using Application.Services;
 using Confluent.Kafka;
 using Kafka.Producer;
 
-namespace AddDocumentMSA
+namespace AddDocument
 {
     public class MessageHandler : IKafkaHandler<string, AddDocumentInbound>
     {
@@ -62,7 +62,7 @@ namespace AddDocumentMSA
         #region Private Method
         private void InsertAddDocumentRecordIntoDB(AddDocumentInbound addDocumentInbound, Uri? sasUrl)
         {
-            AddDocument addDocument = new()
+            Domain.Models.AddDocument addDocument = new()
             {
                 correlationid = addDocumentInbound.CorrelationId,
                 filename = addDocumentInbound.FileName,
