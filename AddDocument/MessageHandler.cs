@@ -55,7 +55,7 @@ namespace AddDocument
             {
                 // Send correlation id and error message to Kafka error response topic.
                 ProduceAddDocumentError(value.CorrelationId, ex.Message);
-            }           
+            }
             return Task.CompletedTask;
         }
 
@@ -67,6 +67,8 @@ namespace AddDocument
                 correlationid = addDocumentInbound.CorrelationId,
                 filename = addDocumentInbound.FileName,
                 tempbloburl = sasUrl,
+                flag = "P"
+
             };
             _addDocumentService.AddDocumentAsync(addDocument);
         }

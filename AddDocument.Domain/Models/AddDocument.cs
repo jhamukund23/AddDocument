@@ -15,5 +15,7 @@ namespace Domain.Models
         public Uri? tempbloburl { get; set; }
         public string? permanenturl { get; set; }
         public string? filename { get; set; }
+        public string? flag { get; set; }
+        public int? totalpagecount { get; set; }
     }
 }
