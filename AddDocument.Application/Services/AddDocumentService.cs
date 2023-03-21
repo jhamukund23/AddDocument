@@ -18,7 +18,7 @@ namespace Application.Services
         {
             Create(model);
             await SaveAsync();
-            return model.correlationid.ToString();
+            return model.CorrelationId.ToString();
         }
         public async Task<bool> UpdateAddDocumentAsync(AddDocument model)
         {
@@ -36,12 +36,12 @@ namespace Application.Services
         public async Task<IList<AddDocument>> GetAddDocumentAsync()
         {
             var res = await FindAllAsync();
-            return res.OrderBy(x => x.correlationid).ToList();
+            return res.OrderBy(x => x.CorrelationId).ToList();
         }
 
         public async Task<AddDocument?> GetAddDocumentAsync(Guid id)
         {
-            var res = await FindByConditionAync(o => o.correlationid.Equals(id));
+            var res = await FindByConditionAync(o => o.CorrelationId.Equals(id));
             return res.FirstOrDefault();
         }
 

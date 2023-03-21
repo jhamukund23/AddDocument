@@ -13,6 +13,8 @@ using Application.Constants;
 using Application.Services;
 using Confluent.Kafka;
 using Kafka.Producer;
+using Application.Interfaces.PostgresqlWrapper;
+using Application.Services.PostgresqlWrapper;
 
 namespace AddDocument
 {
@@ -22,27 +24,30 @@ namespace AddDocument
         private readonly IKafkaProducer<string, AddDocumentError> _errorResponseProducer;
         private readonly IAddDocumentService _addDocumentService;
         private readonly IAzureStorage _storage;
+        private readonly IPostgresqlWrapper _postgresqlWrapper;
         public MessageHandler(
              IKafkaProducer<string, AddDocumentOutbound> responseProducer,
              IKafkaProducer<string, AddDocumentError> errorResponseProducer,
              IAddDocumentService addDocumentService,
-             IAzureStorage storage
+             IAzureStorage storage,
+             IPostgresqlWrapper postgresqlWrapper
             )
         {
             _addDocumentService = addDocumentService;
             _storage = storage;
             _responseProducer = responseProducer;
             _errorResponseProducer = errorResponseProducer;
+            _postgresqlWrapper = postgresqlWrapper;
         }
         public Task HandleAsync(string key, AddDocumentInbound value)
-        {
+        {            
             try
             {
                 // Here we can actually write the code to call microservices
                 Console.WriteLine($"Consuming topic message with the below data\n CorrelationId: {value.CorrelationId}\n FileName: {value.FileName}\n FileSize: {value.FileSize}");
 
                 // Get the SAS URI.
-                Uri? sasUrl = _storage.GetServiceSasUriForContainer();
+                var sasUrl = Convert.ToString(_storage.GetServiceSasUriForContainer());
 
                 // Send correlation id and sasUrl to Kafka response topic.
                 ProduceAddDocumentOutbound(value.CorrelationId, sasUrl);
@@ -60,19 +65,20 @@ namespace AddDocument
         }
 
         #region Private Method
-        private void InsertAddDocumentRecordIntoDB(AddDocumentInbound addDocumentInbound, Uri? sasUrl)
+        private void InsertAddDocumentRecordIntoDB(AddDocumentInbound addDocumentInbound, string? sasUrl)
         {
             Domain.Models.AddDocument addDocument = new()
             {
-                correlationid = addDocumentInbound.CorrelationId,
-                filename = addDocumentInbound.FileName,
-                tempbloburl = sasUrl,
-                flag = "P"
+                CorrelationId = addDocumentInbound.CorrelationId,
+                FileName = addDocumentInbound.FileName,
+                TempBlobUrl = sasUrl,
+                Flag = "P"  // "p" indicate pending here.
 
             };
+            //_postgresqlWrapper.AddDocument(addDocument);
             _addDocumentService.AddDocumentAsync(addDocument);
         }
-        private void ProduceAddDocumentOutbound(Guid correlationId, Uri? sasUrl)
+        private void ProduceAddDocumentOutbound(Guid correlationId, string? sasUrl)
         {
             AddDocumentOutbound addDocumentOutbound = new()
             {

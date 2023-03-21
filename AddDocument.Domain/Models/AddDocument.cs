@@ -10,12 +10,11 @@ namespace Domain.Models
     public class AddDocument
     {
         [Key]
-        public Guid correlationid { get; set; }
-        public Guid? docid { get; set; }
-        public Uri? tempbloburl { get; set; }
-        public string? permanenturl { get; set; }
-        public string? filename { get; set; }
-        public string? flag { get; set; }
-        public int? totalpagecount { get; set; }
+        public Guid CorrelationId { get; set; }
+        public Guid? DocId { get; set; }
+        public string? TempBlobUrl { get; set; }
+        public string? PermanentUrl { get; set; }
+        public string? FileName { get; set; }
+        public string? Flag { get; set; }      
     }
 }

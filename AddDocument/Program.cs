@@ -1,6 +1,8 @@
 ﻿using AddDocument;
 using Application.Interfaces;
+using Application.Interfaces.PostgresqlWrapper;
 using Application.Services;
+using Application.Services.PostgresqlWrapper;
 using Azure.Storage.Blobs;
 using Confluent.Kafka;
 using Domain.Models;
@@ -71,6 +73,7 @@ Host.CreateDefaultBuilder(args)
        // Add services to the container.
        services.AddTransient<IAzureStorage, AzureStorage>();
        services.AddTransient<IAddDocumentService, AddDocumentService>();
+       services.AddTransient<IPostgresqlWrapper, PostgresqlWrapper>();
    })
     .Build()
     .Run();

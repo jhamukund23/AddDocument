@@ -9,7 +9,7 @@ namespace Domain.Models
     public class AddDocumentOutbound
     {
         public Guid CorrelationId { get; set; }
-        public Uri? SasUrl { get; set; }
+        public string? SasUrl { get; set; }
 
     }
 }
