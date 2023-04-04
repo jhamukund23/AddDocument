@@ -40,7 +40,7 @@ namespace AddDocument
             _postgresqlWrapper = postgresqlWrapper;
         }
         public Task HandleAsync(string key, AddDocumentInbound value)
-        {            
+        {
             try
             {
                 // Here we can actually write the code to call microservices
@@ -75,8 +75,8 @@ namespace AddDocument
                 Flag = "P"  // "p" indicate pending here.
 
             };
-            //_postgresqlWrapper.AddDocument(addDocument);
-            _addDocumentService.AddDocumentAsync(addDocument);
+            var res = _postgresqlWrapper.AddDocument(addDocument);
+            //_addDocumentService.AddDocumentAsync(addDocument);
         }
         private void ProduceAddDocumentOutbound(Guid correlationId, string? sasUrl)
         {

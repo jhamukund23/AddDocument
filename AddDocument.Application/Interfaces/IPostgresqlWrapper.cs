@@ -9,6 +9,6 @@ namespace Application.Interfaces.PostgresqlWrapper
 {
     public interface IPostgresqlWrapper
     {
-        void AddDocument(AddDocument addDocument);
+        bool AddDocument(AddDocument addDocument);
     }
 }
