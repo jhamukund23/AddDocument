@@ -1,0 +1,11 @@
+
+version: '3.4'
+
+services:
+  adddocument:
+    image: adddocument
+    build:
+      context: .
+      dockerfile: AddDocument/Dockerfile
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw
